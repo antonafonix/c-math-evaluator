@@ -1,0 +1,15 @@
+*.d
+
+*.o
+*.ko
+*.obj
+*.elf
+
+obj/
+
+math_tool
+math_tool.exe
+
+.DS_Store
+Thumbs.db
+
