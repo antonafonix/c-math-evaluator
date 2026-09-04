@@ -10,7 +10,7 @@ typedef struct {
     int top;
 } Stack;
 
-void initialize(Stack *stack);
+void initialize_stack(Stack *stack);
 
 bool is_empty(Stack *stack);
 

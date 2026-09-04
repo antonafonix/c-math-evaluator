@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-void initialize(Stack *stack) { stack->top = -1; }
+void initialize_stack(Stack *stack) { stack->top = -1; }
 
 bool is_empty(Stack *stack) { return stack->top == -1; }
 

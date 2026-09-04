@@ -1,3 +1,4 @@
+#include "calculation.h"
 #include "tokenizer.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,10 +44,14 @@ int main(int argc, char **argv) {
         if (tok.type == TOKEN_EOF)
             break;
     }
-
+    int calc;
     for (int i = 0; i < count; i++) {
         printf("Token %d -> Type: %d, Value: %s\n", i, tokens[i].type, tokens[i].value);
+
+        calc = calculate(&tokens[i]);
     }
+
+    printf("calc %d\n", calc);
 
     free(tokens);
 
