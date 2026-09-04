@@ -44,11 +44,11 @@ int main(int argc, char **argv) {
         if (tok.type == TOKEN_EOF)
             break;
     }
-    int calc;
-    for (int i = 0; i < count; i++) {
-        printf("Token %d -> Type: %d, Value: %s\n", i, tokens[i].type, tokens[i].value);
 
-        calc = calculate(&tokens[i]);
+    int calc = calculate(tokens, count);
+
+    for (int i = 0; i < count; i++) {
+        printf("Token %d: type=%d, value='%s'\n", i, tokens[i].type, tokens[i].value);
     }
 
     printf("calc %d\n", calc);

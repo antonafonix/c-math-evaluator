@@ -1,8 +1,9 @@
 #include "calculation.h"
 #include "stack.h"
+#include "tokenizer.h"
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int get_priority(char op) {
@@ -41,30 +42,31 @@ int is_number(const char *value) {
            (first_character >= '0' && first_character <= '9');
 }
 
-int calculate(Token *tok) {
+int calculate(Token *tokens, int size) {
     Stack numbers_stack;
     Stack operators_stack;
 
     initialize_stack(&numbers_stack);
     initialize_stack(&operators_stack);
 
-    while (1) {
-        char *token = tok->value;
+    int index = 0;
+    while (index < size) {
 
-        if (is_number(token)) {
-            push(&numbers_stack, atoi(token));
+        switch (tokens[index].type) {
+        case TOKEN_NUMBER:
+            push(&numbers_stack, atoi(tokens[index].value));
+            printf("TOKEN NUMBER IS ADDED\n");
+            break;
+        case TOKEN_OPERATOR:
+            push(&operators_stack, tokens[index].value[0]);
+            printf("TOKEN OPERATOR IS ADDED\n");
+            break;
+        default:
+            break;
         }
-        if (strcmp(token, "+") == 0 || strcmp(token, "-") == 0 || strcmp(token, "*") == 0 ||
-            strcmp(token, "/") == 0) {
-            push(&operators_stack, token[0]);
-        }
+
+        index++;
     }
-
-    int popped_number = pop(&numbers_stack);
-    int popped_operator = pop(&operators_stack);
-
-    printf("popped number %d\n", popped_number);
-    printf("popped operator %c\n", popped_operator);
 
     return 1;
 }
