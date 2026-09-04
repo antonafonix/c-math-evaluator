@@ -1,5 +1,6 @@
 #include "stack.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 void initialize(Stack *stack) { stack->top = -1; }
 
@@ -13,7 +14,7 @@ void push(Stack *stack, int value) {
         return;
     }
     stack->arr[++stack->top] = value;
-    printf("Pushed &d onto the stack\n", value);
+    printf("Pushed %d onto the stack\n", value);
 }
 
 int pop(Stack *stack) {
