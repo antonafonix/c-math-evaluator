@@ -3,14 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int get_priority(char op) {
-    if (op == '+' || op == '-')
-        return 1;
-    if (op == '*' || op == '/')
-        return 2;
-    return 0;
-}
-
 int main(int argc, char **argv) {
     if (argc < 2) {
         printf("Usage: %s \"expression\"\n", argv[0]);
