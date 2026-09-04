@@ -6,6 +6,7 @@
 *.elf
 
 obj/
+.vscode/
 
 math_tool
 math_tool.exe
