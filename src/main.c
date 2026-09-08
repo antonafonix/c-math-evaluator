@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    char *source = argv[1];
+    const char *source = argv[1];
 
     Tokenizer t;
     tokenizer_init(&t, source);
@@ -40,9 +40,6 @@ int main(int argc, char **argv) {
         }
 
         tokens[count++] = tok;
-
-        if (tok.type == TOKEN_EOF)
-            break;
     }
 
     int calc = calculate(tokens, count);

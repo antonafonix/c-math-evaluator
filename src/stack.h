@@ -12,9 +12,9 @@ typedef struct {
 
 void initialize_stack(Stack *stack);
 
-bool is_empty(Stack *stack);
+bool is_empty(const Stack *stack);
 
-bool is_full(Stack *stack);
+bool is_full(const Stack *stack);
 
 void push(Stack *stack, int value);
 

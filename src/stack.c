@@ -4,9 +4,9 @@
 
 void initialize_stack(Stack *stack) { stack->top = -1; }
 
-bool is_empty(Stack *stack) { return stack->top == -1; }
+bool is_empty(const Stack *stack) { return stack->top == -1; }
 
-bool is_full(Stack *stack) { return stack->top >= MAX_SIZE - 1; }
+bool is_full(const Stack *stack) { return stack->top >= MAX_SIZE - 1; }
 
 void push(Stack *stack, int value) {
     if (is_full(stack)) {
