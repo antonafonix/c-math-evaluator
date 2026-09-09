@@ -2,17 +2,17 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-void initializeQueue(Queue *q) {
+void initialize_queue(Queue *q) {
     q->front = -1;
     q->rear = 0;
 }
 
-bool is_empty(Queue *q) { return (q->front == q->rear - 1); }
+bool is_queue_empty(Queue *q) { return (q->front == q->rear - 1); }
 
-bool is_full(Queue *q) { return (q->rear == MAX_SIZE); }
+bool is_queue_full(Queue *q) { return (q->rear == MAX_SIZE); }
 
 void enqueue(Queue *q, int value) {
-    if (isFull(q)) {
+    if (is_queue_full(q)) {
         printf("Queue is full\n");
         return;
     }
@@ -21,15 +21,15 @@ void enqueue(Queue *q, int value) {
 }
 
 void dequeue(Queue *q) {
-    if (isEmpty(q)) {
+    if (is_queue_empty(q)) {
         printf("Queue is empty\n");
         return;
     }
     q->front++;
 }
 
-int peek(Queue *q) {
-    if (isEmpty(q)) {
+int peek_queue(Queue *q) {
+    if (is_queue_empty(q)) {
         printf("Queue is empty\n");
         return -1;
     }
@@ -37,14 +37,14 @@ int peek(Queue *q) {
 }
 
 void printQueue(Queue *q) {
-    if (isEmpty(q)) {
+    if (is_queue_empty(q)) {
         printf("Queue is empty\n");
         return;
     }
 
     printf("Current Queue: ");
     for (int i = q->front + 1; i < q->rear; i++) {
-        printf("%d ", q->items[i]);
+        printf("%c ", q->items[i]);
     }
     printf("\n");
 }

@@ -11,9 +11,18 @@ typedef struct {
     int rear;
 } Queue;
 
-void initialize_queue(Queue* queue);
+void initialize_queue(Queue *queue);
 
-bool is_empty(Queue* queue);
-bool is_full(Queue* queue);
+bool is_queue_empty(Queue *queue);
+
+bool is_queue_full(Queue *queue);
+
+void enqueue(Queue *q, int value);
+
+void dequeue(Queue *q);
+
+void printQueue(Queue *q);
+
+int peek_queue(Queue *q);
 
 #endif

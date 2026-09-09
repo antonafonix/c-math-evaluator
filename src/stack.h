@@ -12,14 +12,14 @@ typedef struct {
 
 void initialize_stack(Stack *stack);
 
-bool is_empty(const Stack *stack);
+bool is_stack_empty(const Stack *stack);
 
-bool is_full(const Stack *stack);
+bool is_stack_full(const Stack *stack);
 
 void push(Stack *stack, int value);
 
 int pop(Stack *stack);
 
-int peek(Stack *stack);
+int peek_stack(Stack *stack);
 
 #endif
