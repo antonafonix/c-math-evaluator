@@ -4,6 +4,7 @@
 *.ko
 *.obj
 *.elf
+*.c.swp
 
 obj/
 .vscode/
