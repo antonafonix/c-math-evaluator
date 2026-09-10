@@ -2,9 +2,13 @@
 #define CALCULATION_H
 
 #include "tokenizer.h"
+#include "queue.h"
+#include "stack.h"
 
 int get_priority(char op);
 
-int calculate(Token *tok, int size);
+void to_postfix(Token *tok, int size, Queue* output_queue, Stack* operators_stack);
+
+int calculate_postfix(Token *tokens, int size);
 
 #endif

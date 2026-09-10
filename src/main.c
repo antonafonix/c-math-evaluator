@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
         tokens[count++] = tok;
     }
 
-    int calc = calculate(tokens, count);
+    int calc = calculate_postfix(tokens, count);
 
     for (int i = 0; i < count; i++) {
         printf("Token %d: type=%d, value='%s'\n", i, tokens[i].type, tokens[i].value);
