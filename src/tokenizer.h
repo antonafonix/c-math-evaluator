@@ -7,10 +7,12 @@ typedef enum { TOKEN_NUMBER, TOKEN_OPERATOR, TOKEN_LPAREN, TOKEN_RPAREN, TOKEN_E
 
 typedef struct {
     TokenType type;
-    char value[32];
+    union {
+        double number_value;
+        char operator_char;
+        char *func_name;
+    } value;
 } Token;
-
-bool is_number(const char *string);
 
 typedef struct {
     const char *source;
@@ -18,6 +20,7 @@ typedef struct {
 } Tokenizer;
 
 void tokenizer_init(Tokenizer *t, const char *source);
+
 Token tokenizer_next_token(Tokenizer *t);
 
 #endif

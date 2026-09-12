@@ -44,10 +44,6 @@ int main(int argc, char **argv) {
 
     int calc = calculate_postfix(tokens, count);
 
-    for (int i = 0; i < count; i++) {
-        printf("Token %d -> Type: %d, Value: %s\n", i, tokens[i].type, tokens[i].value);
-    }
-
     printf("calc %d\n", calc);
 
     free(tokens);

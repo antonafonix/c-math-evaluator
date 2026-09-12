@@ -1,36 +1,10 @@
 #include "tokenizer.h"
 
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-bool is_number(const char *string) {
-    if (string == NULL || string[0] == '\0')
-        return false;
-
-    int dot_counter = 0;
-    size_t length = 1;
-
-    for (char character = string[1]; character != '\0'; ++length, character = string[length]) {
-        const bool is_valid_character =
-            (character >= '0' && character <= '9') || (character == '.' && ++dot_counter == 1);
-
-        if (is_valid_character == false)
-            return false;
-    }
-
-    const char first_character = string[0];
-    bool is_character_sign = (first_character == '-' || first_character == '+');
-    if ((is_character_sign || first_character == '.') && length == 1) {
-        return false;
-    }
-    if (length == 2 && is_character_sign && string[1] == '.') {
-        return false;
-    }
-    return (is_character_sign || first_character == '.') ||
-           (first_character >= '0' && first_character <= '9');
-}
 
 void tokenizer_init(Tokenizer *t, const char *source) {
     t->source = source;
@@ -38,58 +12,48 @@ void tokenizer_init(Tokenizer *t, const char *source) {
 }
 
 Token tokenizer_next_token(Tokenizer *t) {
-    Token tok;
-    memset(&tok, 0, sizeof(Token));
-
     while (t->source[t->position] == ' ' || t->source[t->position] == '\t') {
         t->position++;
     }
 
-    char current[strlen(t->source)];
+    Token tok;
 
-    memcpy(current, t->source, strlen(t->source));
+    char current = t->source[t->position];
 
-    if (current[0] == '\0') {
+    if (current == '\0') {
         tok.type = TOKEN_EOF;
         return tok;
     }
 
-    if (is_number(current)) {
+    if (isdigit(current) || current == '.') {
         tok.type = TOKEN_NUMBER;
 
-        int val_index = 0;
+        char *next_ptr;
+        tok.value.number_value = strtod(&t->source[t->position], &next_ptr);
 
-        while (t->source[t->position] >= '0' && t->source[t->position] <= '9') {
-            if (val_index < 31) {
-                tok.value[val_index++] = t->source[t->position];
-            }
-            t->position++;
-        }
-
-        tok.value[val_index] = '\0';
-        printf("tok %s\n", tok.value);
+        t->position = next_ptr - t->source;
+        printf("tok number %f\n", tok.value.number_value);
         return tok;
     }
 
-    if (current[0] == '+' || current[0] == '-' || current[0] == '*' || current[0] == '/') {
+    switch (current) {
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+        tok.value.operator_char = current;
         tok.type = TOKEN_OPERATOR;
-        tok.value[0] = current[0];
-        tok.value[1] = '\0';
         t->position++;
         return tok;
-    }
-
-    if (current[0] == ')') {
-        tok.type = TOKEN_RPAREN;
-        tok.value[0] = current[0];
-        tok.value[1] = '\0';
-        t->position++;
-        return tok;
-    } else if (current[0] == '(') {
+    case '(':
         tok.type = TOKEN_LPAREN;
-        tok.value[0] = current[0];
-        tok.value[1] = '\0';
         t->position++;
+
+        return tok;
+    case ')':
+        tok.type = TOKEN_RPAREN;
+        t->position++;
+
         return tok;
     }
 
