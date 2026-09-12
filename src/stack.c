@@ -14,7 +14,6 @@ void push(Stack *stack, int value) {
         return;
     }
     stack->arr[++stack->top] = value;
-    printf("Pushed %d onto the stack\n", value);
 }
 
 int pop(Stack *stack) {
@@ -24,7 +23,6 @@ int pop(Stack *stack) {
     }
     int popped = stack->arr[stack->top];
     stack->top--;
-    printf("popped %d from the stack\n", popped);
     return popped;
 }
 

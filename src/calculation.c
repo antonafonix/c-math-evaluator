@@ -3,6 +3,7 @@
 #include "stack.h"
 #include "tokenizer.h"
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +16,7 @@ int get_priority(char op) {
     return 0;
 }
 
-void to_postfix(Token *tokens, int size, Queue* output_queue, Stack* operators_stack) {
+void to_postfix(Token *tokens, int size, Queue *output_queue, Stack *operators_stack) {
     int index = 0;
     while (index < size) {
         char value = tokens[index].value[0];
@@ -55,5 +56,42 @@ int calculate_postfix(Token *tokens, int size) {
 
     printQueue(&output_queue);
 
-    return 0;
+    int result = 0;
+
+    Stack number_stack;
+
+    initialize_stack(&number_stack);
+
+    for (int i = output_queue.front + 1; i < output_queue.rear; i++) {
+        if (isdigit(output_queue.items[i])) {
+            push(&number_stack, output_queue.items[i] - '0');
+        } else {
+            int second_number = pop(&number_stack);
+            int first_number = pop(&number_stack);
+            switch (output_queue.items[i]) {
+            case '+':
+                result = first_number + second_number;
+                break;
+            case '*':
+                result = first_number * second_number;
+                break;
+            case '/':
+                if (second_number == 0) {
+                    printf("Error! You cannot divide by 0\n");
+                    return 0;
+                } else {
+                    result = first_number / second_number;
+                }
+                break;
+            case '-':
+                result = first_number - second_number;
+                break;
+            default:
+                return -1;
+            }
+            push(&number_stack, result);
+        }
+    }
+
+    return pop(&number_stack);
 }
