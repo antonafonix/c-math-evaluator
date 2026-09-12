@@ -1,12 +1,16 @@
 #ifndef TOKENIZER_H
 #define TOKENIZER_H
 
+#include <stdbool.h>
+
 typedef enum { TOKEN_NUMBER, TOKEN_OPERATOR, TOKEN_LPAREN, TOKEN_RPAREN, TOKEN_EOF } TokenType;
 
 typedef struct {
     TokenType type;
     char value[32];
 } Token;
+
+bool is_number(const char *string);
 
 typedef struct {
     const char *source;
