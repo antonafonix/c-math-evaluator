@@ -4,6 +4,7 @@
 #include "tokenizer.h"
 
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +15,33 @@ int get_priority(char op) {
     if (op == '+' || op == '-')
         return 1;
     return 0;
+}
+
+bool is_number(const char *string) {
+    if (string == NULL || string[0] == '\0')
+        return false;
+
+    int dot_counter = 0;
+    size_t length = 1;
+
+    for (char character = string[1]; character != '\0'; ++length, character = string[length]) {
+        const bool is_valid_character =
+            (character >= '0' && character <= '9') || (character == '.' && ++dot_counter == 1);
+
+        if (is_valid_character == false)
+            return false;
+    }
+
+    const char first_character = string[0];
+    bool is_character_sign = (first_character == '-' || first_character == '+');
+    if ((is_character_sign || first_character == '.') && length == 1) {
+        return false;
+    }
+    if (length == 2 && is_character_sign && string[1] == '.') {
+        return false;
+    }
+    return (is_character_sign || first_character == '.') ||
+           (first_character >= '0' && first_character <= '9');
 }
 
 void to_postfix(Token *tokens, int size, Queue *output_queue, Stack *operators_stack) {
