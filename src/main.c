@@ -42,9 +42,9 @@ int main(int argc, char **argv) {
         tokens[count++] = tok;
     }
 
-    int calc = calculate_postfix(tokens, count);
+    double calc = calculate_postfix(tokens, count);
 
-    printf("calc %d\n", calc);
+    printf("calc %.2f\n", calc);
 
     free(tokens);
 

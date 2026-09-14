@@ -1,22 +1,23 @@
 #include "queue.h"
+#include "tokenizer.h"
 #include <stdbool.h>
 #include <stdio.h>
 
 void initialize_queue(Queue *q) {
-    q->front = -1;
+    q->front = 0;
     q->rear = 0;
 }
 
-bool is_queue_empty(Queue *q) { return (q->front == q->rear - 1); }
+bool is_queue_empty(Queue *q) { return q->front == q->rear; }
 
 bool is_queue_full(Queue *q) { return (q->rear == MAX_SIZE); }
 
-void enqueue(Queue *q, int value) {
+void enqueue(Queue *q, Token token) {
     if (is_queue_full(q)) {
         printf("Queue is full\n");
         return;
     }
-    q->items[q->rear] = value;
+    q->items[q->rear] = token;
     q->rear++;
 }
 
@@ -28,12 +29,14 @@ void dequeue(Queue *q) {
     q->front++;
 }
 
-int peek_queue(Queue *q) {
+Token peek_queue(Queue *q) {
     if (is_queue_empty(q)) {
         printf("Queue is empty\n");
-        return -1;
+        Token empty = {0};
+        empty.type = TOKEN_EOF;
+        return empty;
     }
-    return q->items[q->front + 1];
+    return q->items[q->front];
 }
 
 void printQueue(Queue *q) {
@@ -43,8 +46,12 @@ void printQueue(Queue *q) {
     }
 
     printf("Current Queue: ");
-    for (int i = q->front + 1; i < q->rear; i++) {
-        printf("%c ", q->items[i]);
+    for (int i = q->front; i < q->rear; i++) {
+        if (q->items[i].type == TOKEN_NUMBER) {
+            printf("%f ", q->items[i].value.number_value);
+        } else if (q->items[i].type == TOKEN_OPERATOR) {
+            printf("%c ", q->items[i].value.operator_char);
+        }
     }
     printf("\n");
 }

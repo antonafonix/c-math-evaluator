@@ -9,6 +9,6 @@ int get_priority(char op);
 
 void to_postfix(Token *tok, int size, Queue* output_queue, Stack* operators_stack);
 
-int calculate_postfix(Token *tokens, int size);
+double calculate_postfix(Token *tokens, int size);
 
 #endif

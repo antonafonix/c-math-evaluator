@@ -1,4 +1,5 @@
 #include "stack.h"
+#include "tokenizer.h"
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -8,28 +9,34 @@ bool is_stack_empty(const Stack *stack) { return stack->top == -1; }
 
 bool is_stack_full(const Stack *stack) { return stack->top >= MAX_SIZE - 1; }
 
-void push(Stack *stack, int value) {
+void push(Stack *stack, Token token) {
     if (is_stack_full(stack)) {
         printf("Stack overflow\n");
         return;
     }
-    stack->arr[++stack->top] = value;
+
+    stack->arr[++stack->top] = token;
 }
 
-int pop(Stack *stack) {
+Token pop(Stack *stack) {
     if (is_stack_empty(stack)) {
-        printf("stack is empty\n");
-        return -1;
+        printf("Stack is empty\n");
+
+        Token empty = {0};
+        empty.type = TOKEN_EOF;
+        return empty;
     }
-    int popped = stack->arr[stack->top];
-    stack->top--;
-    return popped;
+
+    return stack->arr[stack->top--];
 }
 
-int peek_stack(Stack *stack) {
+Token peek_stack(const Stack *stack) {
     if (is_stack_empty(stack)) {
-        printf("stack is empty\n");
-        return -1;
+        printf("Stack is empty\n");
+
+        Token empty = {0};
+        empty.type = TOKEN_EOF;
+        return empty;
     }
 
     return stack->arr[stack->top];

@@ -23,29 +23,25 @@ void to_postfix(Token *tokens, int size, Queue *output_queue, Stack *operators_s
         TokenType value_type = tokens[index].type;
 
         if (TOKEN_NUMBER == value_type) {
-            enqueue(output_queue, tokens[index].value.number_value);
+            enqueue(output_queue, tokens[index]);
         } else if (TOKEN_OPERATOR == value_type) {
             while (operators_stack->top != -1 &&
-                   get_priority(peek_stack(operators_stack)) >=
+                   get_priority(peek_stack(operators_stack).value.operator_char) >=
                        get_priority(tokens[index].value.operator_char)) {
-                char op2 = pop(operators_stack);
-                enqueue(output_queue, op2);
-                printf("added %c to the output queue\n", op2);
+                enqueue(output_queue, pop(operators_stack));
             }
-
-            push(operators_stack, tokens[index].value.operator_char);
+            push(operators_stack, tokens[index]);
         }
 
         index++;
     }
 
     while (operators_stack->top != -1) {
-        char op2 = pop(operators_stack);
-        enqueue(output_queue, op2);
+        enqueue(output_queue, pop(operators_stack));
     }
 }
 
-int calculate_postfix(Token *tokens, int size) {
+double calculate_postfix(Token *tokens, int size) {
     Stack operators_stack;
     Queue output_queue;
 
@@ -56,19 +52,22 @@ int calculate_postfix(Token *tokens, int size) {
 
     printQueue(&output_queue);
 
-    int result = 0;
+    double result = 0;
 
     Stack number_stack;
 
     initialize_stack(&number_stack);
 
-    for (int i = output_queue.front + 1; i < output_queue.rear; i++) {
-        if (isdigit(output_queue.items[i])) {
-            push(&number_stack, output_queue.items[i] - '0');
+    for (int i = output_queue.front; i < output_queue.rear; i++) {
+        if (output_queue.items[i].type == TOKEN_NUMBER) {
+            push(&number_stack, output_queue.items[i]);
         } else {
-            int second_number = pop(&number_stack);
-            int first_number = pop(&number_stack);
-            switch (output_queue.items[i]) {
+            Token popped_second_number = pop(&number_stack);
+            double second_number = popped_second_number.value.number_value;
+            Token popped_first_number = pop(&number_stack);
+            double first_number = popped_first_number.value.number_value;
+
+            switch (output_queue.items[i].value.operator_char) {
             case '+':
                 result = first_number + second_number;
                 break;
@@ -89,9 +88,14 @@ int calculate_postfix(Token *tokens, int size) {
             default:
                 return -1;
             }
-            push(&number_stack, result);
+            Token token_result;
+            token_result.type = TOKEN_NUMBER;
+            token_result.value.number_value = result;
+            push(&number_stack, token_result);
         }
     }
 
-    return pop(&number_stack);
+    Token popped_result = pop(&number_stack);
+
+    return popped_result.value.number_value;
 }

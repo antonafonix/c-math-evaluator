@@ -10,7 +10,6 @@ typedef struct {
     union {
         double number_value;
         char operator_char;
-        char *func_name;
     } value;
 } Token;
 

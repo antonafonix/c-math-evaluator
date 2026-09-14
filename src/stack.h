@@ -1,12 +1,13 @@
 #ifndef STACK_H
 #define STACK_H
 
+#include "tokenizer.h"
 #include <stdbool.h>
 
 #define MAX_SIZE 100
 
 typedef struct {
-    int arr[MAX_SIZE];
+    Token arr[MAX_SIZE];
     int top;
 } Stack;
 
@@ -16,10 +17,10 @@ bool is_stack_empty(const Stack *stack);
 
 bool is_stack_full(const Stack *stack);
 
-void push(Stack *stack, int value);
+void push(Stack *stack, Token token);
 
-int pop(Stack *stack);
+Token pop(Stack *stack);
 
-int peek_stack(Stack *stack);
+Token peek_stack(const Stack *stack);
 
 #endif
