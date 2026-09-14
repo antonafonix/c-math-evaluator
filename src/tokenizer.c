@@ -12,48 +12,50 @@ void tokenizer_init(Tokenizer *t, const char *source) {
 }
 
 Token tokenizer_next_token(Tokenizer *t) {
-    while (t->source[t->position] == ' ' || t->source[t->position] == '\t') {
+    while (t->source[t->position] == ' ' ||
+           t->source[t->position] == '\t') {
         t->position++;
     }
 
     Token tok;
 
-    char current = t->source[t->position];
+    const char *current = &t->source[t->position];
 
-    if (current == '\0') {
+    if (current[0] == '\0') {
         tok.type = TOKEN_EOF;
         return tok;
     }
 
-    if (isdigit(current) || current == '.') {
-        tok.type = TOKEN_NUMBER;
+    char *next_ptr;
+    double number = strtod(current, &next_ptr);
 
-        char *next_ptr;
-        tok.value.number_value = strtod(&t->source[t->position], &next_ptr);
+    if (next_ptr != current) {
+        tok.type = TOKEN_NUMBER;
+        tok.value.number_value = number;
 
         t->position = next_ptr - t->source;
-        printf("tok number %f\n", tok.value.number_value);
+
         return tok;
     }
 
-    switch (current) {
+    switch (current[0]) {
     case '+':
     case '-':
     case '*':
     case '/':
-        tok.value.operator_char = current;
+        tok.value.operator_char = current[0];
         tok.type = TOKEN_OPERATOR;
         t->position++;
         return tok;
+
     case '(':
         tok.type = TOKEN_LPAREN;
         t->position++;
-
         return tok;
+
     case ')':
         tok.type = TOKEN_RPAREN;
         t->position++;
-
         return tok;
     }
 
