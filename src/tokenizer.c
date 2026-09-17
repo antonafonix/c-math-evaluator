@@ -43,6 +43,7 @@ Token tokenizer_next_token(Tokenizer *t) {
     case '-':
     case '*':
     case '/':
+    case '^':
         tok.value.operator_char = current[0];
         tok.type = TOKEN_OPERATOR;
         t->position++;

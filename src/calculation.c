@@ -4,16 +4,20 @@
 #include "tokenizer.h"
 
 #include <ctype.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int get_priority(char op) {
+    if (op == '^')
+        return 3;
     if (op == '*' || op == '/')
         return 2;
     if (op == '+' || op == '-')
         return 1;
+
     return 0;
 }
 
@@ -37,7 +41,7 @@ void to_postfix(Token *tokens, int size, Queue *output_queue, Stack *operators_s
         } else if (TOKEN_RPAREN == value_type) {
             while (!is_stack_empty(operators_stack) &&
                    peek_stack(operators_stack).type != TOKEN_LPAREN) {
-                    enqueue(output_queue, pop(operators_stack));
+                enqueue(output_queue, pop(operators_stack));
             }
             if (is_stack_empty(operators_stack)) {
                 printf("Error stack is empty!\n");
@@ -98,6 +102,9 @@ double calculate_postfix(Token *tokens, int size) {
                 break;
             case '-':
                 result = first_number - second_number;
+                break;
+            case '^':
+                result = pow(first_number, second_number);
                 break;
             default:
                 return -1;
