@@ -72,17 +72,17 @@ double calculate_postfix(Token *tokens, int size) {
 
     double result = 0;
 
-    Stack number_stack;
+    Stack result_stack;
 
-    initialize_stack(&number_stack);
+    initialize_stack(&result_stack);
 
     for (int i = output_queue.front; i < output_queue.rear; i++) {
         if (output_queue.items[i].type == TOKEN_NUMBER) {
-            push(&number_stack, output_queue.items[i]);
+            push(&result_stack, output_queue.items[i]);
         } else {
-            Token popped_second_number = pop(&number_stack);
+            Token popped_second_number = pop(&result_stack);
             double second_number = popped_second_number.value.number_value;
-            Token popped_first_number = pop(&number_stack);
+            Token popped_first_number = pop(&result_stack);
             double first_number = popped_first_number.value.number_value;
 
             switch (output_queue.items[i].value.operator_char) {
@@ -112,11 +112,11 @@ double calculate_postfix(Token *tokens, int size) {
             Token token_result;
             token_result.type = TOKEN_NUMBER;
             token_result.value.number_value = result;
-            push(&number_stack, token_result);
+            push(&result_stack, token_result);
         }
     }
 
-    Token popped_result = pop(&number_stack);
+    Token popped_result = pop(&result_stack);
 
     return popped_result.value.number_value;
 }
