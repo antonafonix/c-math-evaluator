@@ -19,6 +19,7 @@ int get_priority(char op) {
 
 void to_postfix(Token *tokens, int size, Queue *output_queue, Stack *operators_stack) {
     int index = 0;
+
     while (index < size) {
         TokenType value_type = tokens[index].type;
 
@@ -31,6 +32,19 @@ void to_postfix(Token *tokens, int size, Queue *output_queue, Stack *operators_s
                 enqueue(output_queue, pop(operators_stack));
             }
             push(operators_stack, tokens[index]);
+        } else if (TOKEN_LPAREN == value_type) {
+            push(operators_stack, tokens[index]);
+        } else if (TOKEN_RPAREN == value_type) {
+            while (!is_stack_empty(operators_stack) &&
+                   peek_stack(operators_stack).type != TOKEN_LPAREN) {
+                    enqueue(output_queue, pop(operators_stack));
+            }
+            if (is_stack_empty(operators_stack)) {
+                printf("Error stack is empty!\n");
+                return;
+            } else {
+                pop(operators_stack);
+            }
         }
 
         index++;
